@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular2・TodoMVC</title>
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+
+  <body>
+    <section class="todoapp">
+      <div id="app">
+        <header class="header">
+          <h1>todos</h1>
+          <form @submit.prevent="addItem">
+            <input type="text" v-model="newItem" class="create-todo" placeholder="What needs to be done?">
+          </form>
+        </header>
+
+        <div class="main">
+          <ul class="todo-list">
+            <li class="todo" v-for="(todo, index) in todosFiltered" :class="{editing: todo == editedTodo}">
+              <div class="view">
+                <input class="toggle" type="checkbox" v-model="todo.isDone">
+                <label @dblclick="editTodo(todo)">{{ todo.title }}</label>
+                <button class="destroy" @click="deleteItem(index)"></button>
+              </div>
+              <input class="edit" type="text" v-model="todo.title" v-todo-focus="todo == editedTodo" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)">
+            </li>
+          </ul>
+        </div>
+
+        <footer class="footer" v-show="todos.length">
+          <span class="todo-count">{{ remaining }} {{pluralize('item', remaining)}} left</span>
+          <ul class="filters">
+            <li><a :class="{active:filter == 'all'}" @click="filter='all'">All</a></li>
+            <li><a :class="{active:filter == 'active'}" @click="filter='active'">Active</a></li>
+            <li><a :class="{active:filter == 'completed'}" @click="filter='completed'">Completed</a></li>
+          </ul>
+          <button @click="clear" class="clear-completed" v-show="todos.length > remaining">Clear completed</button>
+        </footer>
+      </div>
+    </section>
+
+    <footer class="info">
+      <p>Double-click to edit a todo</p>
+      <p>Created by <a href="http://github.com/samccone">Sam Saccone</a> and <a href="http://github.com/colineberhardt">Colin Eberhardt</a> using <a href="http://angular.io">Angular2</a></p>
+      <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
